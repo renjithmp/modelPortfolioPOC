@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using PortfolioService.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,16 +26,21 @@ namespace PortfolioService.Services
 
         }
 
-        public bool AddModelPortfolio(int id,string Name)
+        public bool AddModelPortfolio(string Name,List<StockBasket> basketItems,DateTime startDate)
         {
             ModelPortfolio modelPortfolio = new ModelPortfolio();
-            Dictionary<string, List<Stocks>> rebalancingHistory = new Dictionary<string, List<Stocks>>();
-            List<Stocks> stocks = new List<Stocks>();
-            stocks.Add(new Stocks() { Id = 1, Name = "stock1" });
-            stocks.Add(new Stocks() { Id = 2, Name = "stock2" });
+            modelPortfolio.BasketItems = basketItems;
+            modelPortfolio.StartDate = startDate;
+            Dictionary<string, List<StockBasket>> rebalancingHistory = new Dictionary<string, List<StockBasket>>();
+            List<StockBasket> stocks = new List<StockBasket>();
+            Stock stock1 = new Stock() { Id = 1, Name = "stock1" };
+            Stock stock2 = new Stock() { Id = 2, Name = "stock2" };
+            stocks.Add(item: new StockBasket() { Quantity=10, Stock=stock1 });
+            stocks.Add(item: new StockBasket() { Quantity = 2, Stock = stock2 });
+            //stocks.Add(new StockBasket() { Id = 2, Name = "stock2" });
             rebalancingHistory.Add(key: DateTime.Now.ToString(), stocks);
             modelPortfolio.RebalancingHistory = rebalancingHistory;
-            modelPortfolio.PortfolioId = id;
+            modelPortfolio.PortfolioId = Guid.NewGuid().ToString();
             modelPortfolio.Name = Name;
             _logger.LogInformation("get all model portfolios");
             return _modelPortfolioRepository.AddModelPortfolio(modelPortfolio);

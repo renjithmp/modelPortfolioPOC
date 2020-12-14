@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PortfolioService.Model;
 using PortfolioService.Services;
 
 namespace PortfolioService.Controllers
@@ -15,24 +17,35 @@ namespace PortfolioService.Controllers
 
 
         private IModelPortfolioService _modelPortfolioService;
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<ModelPortfolioController> _logger;
 
-        public ModelPortfolioController(ILogger<WeatherForecastController> logger,IModelPortfolioService modelPortfolioService)
+        public ModelPortfolioController(ILogger<ModelPortfolioController> logger,IModelPortfolioService modelPortfolioService)
         {
             _logger = logger;
             _modelPortfolioService = modelPortfolioService;
         }
 
         [HttpPost]
-        public void Add(int id,string name)
+        [ProducesResponseType(typeof(string),(int)HttpStatusCode.OK)]
+        public async Task<IActionResult> Add(string name, [FromQuery
+            ]List<StockBasket> baskets)
         {
-            _modelPortfolioService.AddModelPortfolio(id, name);
+            _modelPortfolioService.AddModelPortfolio(name,baskets,DateTime.Now);
+            return Ok("item created");
         }
 
         [HttpGet]
-        public List<ModelPortfolio> Get()
+        [ProducesResponseType(typeof(List<ModelPortfolio>),(int) HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> Get()
         {
-            return _modelPortfolioService.GetAllModelPortfolios();
+            try { 
+            return Ok(_modelPortfolioService.GetAllModelPortfolios());
+            }
+            catch
+            {
+                return NotFound();
+            }
         }
     }
 }
