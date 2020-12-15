@@ -1,0 +1,85 @@
+    <div class="row">
+  <div class="col-sm-6 col-lg-3">
+   
+    <div class="card text-white bg-info">
+      <div class="card-body pb-0">
+        <button type="button" class="btn btn-transparent p-0 float-right">
+          <i class="icon-location-pin"></i>
+        </button>
+        <div class="text-value">Model Portfolios from Brokerages</div>
+        <div>year 2020</div>
+      </div>
+    </div>
+  </div>
+      </div>
+  <div class="row" *ngFor ="let data of modelPortfolio">
+    <div class="col-lg-6">
+      <div class="card">
+        <div class="card-header">
+          <i class="fa fa-align-justify"></i> {{data.name}}
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Stock</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Return</th>
+                <th>Active</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let stock of data.basketItems">
+                <td>{{stock.stock.name}}</td>
+                <td>{{stock.price}}</td>
+                <td>{{stock.quantity}}</td>
+                <td>{{stock.return}}</td>
+                <td>
+                  <span class="badge badge-success">Active</span>
+                </td>
+              </tr>
+              <tr>
+                <td>dummy1</td>
+                <td>100</td>
+                <td>5</td>
+                <td>100%</td>
+                <td>
+                  <span class="badge badge-danger">Banned</span>
+                </td>
+              </tr>
+              <tr>
+                <td>dummy2</td>
+                <td>10</td>
+                <td>5</td>
+                <td>10%</td>
+                <td>
+                  <span class="badge badge-secondary">Banned</span>
+                </td>
+              </tr>
+              <tr>
+                <td>dummy3</td>
+                <td>130</td>
+                <td>52</td>
+                <td>120%</td>
+                <td>
+                  <span class="badge badge-warning">Banned</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+            <li class="page-item active">
+              <a class="page-link" href="#">1</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+

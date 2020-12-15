@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PortfolioService.Model;
+using PortfolioService.Repository;
 using PortfolioService.Services;
 
 namespace PortfolioService
@@ -39,6 +40,16 @@ namespace PortfolioService
                 var modelRepository = sp.GetRequiredService<IModelPortfolioRepository>();
                 return new ModelPortfolioService(logger, modelRepository);
             });
+            services.AddSingleton<ISearchRepository>(sp => {
+                var portfolioManagerConnection = sp.GetRequiredService<IPortfolioManagerConnection>();
+                return new SearchRepository(portfolioManagerConnection);
+            });
+
+            services.AddSingleton<ISearchService>(sp => {
+                ISearchRepository searchRepository = sp.GetRequiredService<ISearchRepository>();
+                return new SearchService(searchRepository);
+            });
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -83,7 +94,7 @@ namespace PortfolioService
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    pattern: "service/{controller}/{action=Index}/{id?}");
             });
 
             app.UseSpa(spa =>

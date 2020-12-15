@@ -43,6 +43,7 @@ namespace PortfolioService.Controllers
             return Ok(_modelPortfolioService.GetAllModelPortfolios());
             }
             catch
+
             {
                 return NotFound();
             }
